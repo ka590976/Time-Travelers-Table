@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Cucina Napoletana (c. 1900) - Food, Poverty, Innovation & Emigration</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Vintage Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        parchment: '#f7f2e7',
+                        'parchment-dark': '#ebe1ce',
+                        sepia: {
+                            50: '#fbf9f4',
+                            100: '#f5edd9',
+                            200: '#ebd8b2',
+                            600: '#8c613c',
+                            800: '#4a331e',
+                            900: '#2c1e11'
+                        },
+                        terracotta: '#a34828',
+                        'terracotta-dark': '#7d3319',
+                        olive: '#556b2f',
+                        gold: '#c59b27'
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                        vintage: ['IM Fell English', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Parchment Background Texture & Vignette Effects */
+        body {
+            background-color: #f4ede0;
+            background-image: 
+                radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(74, 51, 30, 0.05), rgba(44, 30, 17, 0.12));
+            background-size: 20px 20px, 100% 100%;
+            color: #2c1e11;
+        }
+
+        /* Antique Border Ornamentation */
+        .antique-border {
+            border: 2px solid #8c613c;
+            outline: 1px solid #8c613c;
+            outline-offset: 4px;
+            box-shadow: inset 0 0 15px rgba(140, 97, 60, 0.15);
+        }
+
+        .double-underline {
+            position: relative;
+        }
+        .double-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            border-top: 1px solid #a34828;
+            border-bottom: 1px solid #a34828;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ebe1ce;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8c613c;
+            border-radius: 4px;
+        }
+
+        /* Modal Overlay Animation */
+        .modal-enter {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-terracotta selection:text-white">
+
+    <!-- TOP ANNOUNCEMENT / VINTAGE HEADER BAR -->
+    <header class="bg-sepia-900 text-parchment py-2 px-4 border-b-2 border-gold text-xs md:text-sm tracking-widest text-center font-cinzel">
+        <span class="text-gold font-bold"</span> &nbsp;&nbsp; FORNO VESUVIANO &nbsp;•&nbsp; NAPLES, ITALY 1900
+    </header>
+
+    <!-- HERO / TITLE SECTION -->
+    <section class="relative py-10 md:py-14 px-4 text-center border-b border-sepia-600/30 bg-parchment-dark/50">
+        <div class="max-w-4xl mx-auto">
+            <div class="inline-block px-3 py-1 mb-3 text-xs tracking-widest uppercase bg-terracotta/10 text-terracotta border border-terracotta/30 rounded font-cinzel font-semibold">
+                Created by Katelyn Lamp
+            </div>
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-cinzel font-bold text-sepia-900 tracking-tight mb-4">
+                La Cucina Napoletana <span class="block text-2xl sm:text-4xl italic font-playfair font-normal text-terracotta mt-1">(c. 1900)</span>
+            </h1>
+            <p class="text-base sm:text-lg font-vintage text-sepia-800 max-w-2xl mx-auto leading-relaxed">
+                Explore the culinary landscape of Naples, Italy. Where extreme poverty, the industrial pasta revolution, volcanic fertility, and the Great Transatlantic Migration reshaped world food culture.
+            </p>
+        </div>
+    </section>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="sticky top-0 z-30 bg-parchment border-b border-sepia-600/30 shadow-md">
+        <div class="max-w-5xl mx-auto flex flex-wrap justify-center font-cinzel text-xs sm:text-sm font-bold">
+            <button onclick="switchTab('menu')" id="tab-menu" class="tab-btn px-4 sm:px-8 py-3.5 border-b-2 border-terracotta text-terracotta transition-colors flex items-center gap-2">
+                Forno Vesuviano Menu
+            </button>
+            <button onclick="switchTab('history')" id="tab-history" class="tab-btn px-4 sm:px-8 py-3.5 border-b-2 border-transparent text-sepia-800 hover:text-terracotta transition-colors flex items-center gap-2">
+                Historical Forces
+            </button>
+            <button onclick="switchTab('research')" id="tab-research" class="tab-btn px-4 sm:px-8 py-3.5 border-b-2 border-transparent text-sepia-800 hover:text-terracotta transition-colors flex items-center gap-2">
+                Research & Gallery
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+
+        <!-- ================= TAB 1: MENU SECTION ================= -->
+        <div id="content-menu" class="space-y-8">
+            
+            <!-- HISTORICAL CONTEXT BRIEF -->
+            <div class="bg-parchment-dark/70 border border-sepia-600/40 rounded-lg p-5 text-sm sm:text-base font-playfair text-sepia-900 leading-relaxed shadow-sm">
+                <p class="italic">
+                  </strong>Welcome. In 1900 Naples, a day worker earned approximately 1.50 to 2.50 Lira (150-250 Centesimi) per day. The menu below reflects the prices in Centesimi (where 100c = 1 Lira) and traditional foods of a working-class Neapolitan trattoria. Click on any dish to examine its history, ingredients, and legacy.</strong>
+                </p>
+            </div>
+
+            <!-- MENU CONTAINER (PARCHMENT CARD DESIGN) -->
+            <div class="bg-parchment antique-border rounded-lg p-6 sm:p-10 shadow-xl space-y-10 relative">
+                
+                <!-- MENU HEADER -->
+                <div class="text-center space-y-2 border-b-2 border-sepia-600/30 pb-6">
+                    <span class="font-cinzel tracking-widest text-xs text-terracotta font-bold uppercase">Forno Vesuviano</span>
+                    <h2 class="text-3xl sm:text-4xl font-cinzel font-bold text-sepia-900">MENÙ</h2>
+                    <p class="font-vintage italic text-sepia-800 text-sm">Napoli (1900)</p>
+                </div>
+
+                <!-- CATEGORIES SECTIONS -->
+                <div id="menu-sections-container" class="space-y-12">
+                    <!-- Dynamic rendering via JS -->
+                </div>
+
+                <!-- MENU FOOTER -->
+                <div class="text-center pt-6 border-t border-sepia-600/30 text-xs font-vintage text-sepia-800 italic">
+                    * Prices in Centesimi (c). 100 Centesimi = 1 Lira Italiana. Bread served with lard extra 2c.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= TAB 2: HISTORICAL FORCES ================= -->
+        <div id="content-history" class="hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-cinzel font-bold text-sepia-900 mb-2">Historical Forces</h2>
+                <p class="font-vintage text-sepia-800 italic">Understanding the history behind Neapolitan food culture in 1900.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-parchment border border-sepia-600/30 rounded-lg p-6 shadow-md space-y-3">
+                    <div class="w-10 h-10 rounded-full bg-red-100 text-red-800 flex items-center justify-center font-bold text-lg mb-2">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <h3 class="text-xl font-cinzel font-bold text-sepia-900">1. Extreme Poverty</h3>
+                    <p class="text-sm font-playfair text-sepia-800 leading-relaxed">
+                        Following the Italian Unification (1861) and the cholera epidemic of 1884, Naples suffered severe economic stagnation and overcrowded slums. Meat was an extreme luxury reserved for major feast days. 
+                    </p>
+                    <p class="text-sm font-playfair text-sepia-800 leading-relaxed">
+                        The urban poor relied on cheap street fryers, offal, wild herbs, lard instead of butter, and affordable dry pasta. High-calorie fried foods (like panzerotti and arancini) provided quick energy for manual laborers at low cost.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-parchment border border-sepia-600/30 rounded-lg p-6 shadow-md space-y-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-lg mb-2">
+                        <i class="fa-solid fa-industry"></i>
+                    </div>
+                    <h3 class="text-xl font-cinzel font-bold text-sepia-900">2. Industrialization & Tech Innovation</h3>
+                    <p class="text-sm font-playfair text-sepia-800 leading-relaxed">
+                        By 1900, the Gulf of Naples (especially Gragnano and Torre Annunziata) had transformed into the world epicenter of industrial pasta manufacturing. Hydraulic presses and mechanical kneaders replaced manual labor, creating uniform dry macaroni that could be stored indefinitely.
+                    </p>
+                    <p class="text-sm font-playfair text-sepia-800 leading-relaxed">
+                        Simultaneously, the invention of commercial steam-canning allowed San Marzano tomatoes to be preserved and distributed cheaply. Furthermore, wood and volcanic stone ovens reached highly efficient levels for pizza baking.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-parchment border border-sepia-600/30 rounded-lg p-6 shadow-md space-y-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-lg mb-2">
+                        <i class="fa-solid fa-ship"></i>
+                    </div>
+                    <h3 class="text-xl font-cinzel font-bold text-sepia-900">3. The Great Transatlantic Migration</h3>
+                    <p class="text-sm font-playfair text-sepia-800 leading-relaxed">
+                        Between 1880 and 1920, over 4 million Southern Italians emigrated to North and South America. Emigrants carried Neapolitan culinary memory across the Atlantic. 
+                    </p>
+                    <p class="text-sm font-playfair text-sepia-800 leading-relaxed">
+                        In cities like New York and Buenos Aires, meat was much cheaper and more abundant than in Naples. This economic shift birthed Italian-American staples like meat-loaded Ragù, thick mozzarella pizza layers, and oversized meatballs.
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-parchment border border-sepia-600/30 rounded-lg p-6 shadow-md space-y-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-lg mb-2">
+                        <i class="fa-solid fa-volcano"></i>
+                    </div>
+                    <h3 class="text-xl font-cinzel font-bold text-sepia-900">4. Volcanic Soil & Coastal Geography</h3>
+                    <p class="text-sm font-playfair text-sepia-800 leading-relaxed">
+                        Mount Vesuvius provided mineral-rich, fertile volcanic soil ideal for sweet plum tomatoes, garlic, basil, and high-tannin wine grapes.
+                    </p>
+                    <p class="text-sm font-playfair text-sepia-800 leading-relaxed">
+                        The Bay of Naples yielded rich small marine life (anchovies, squid, rockfish), which fishermen sold fresh at the docks. While high-grade prime fish was sold to the wealthy, the leftover scrap fish nourished the working-class.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 3: RESEARCH & GALLERY SECTION ================= -->
+        <div id="content-research" class="hidden space-y-10">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-3xl font-cinzel font-bold text-sepia-900">Research & Gallery</h2>
+                <p class="font-vintage text-sepia-800 italic">Primary documents, images, and literature examining food culture in Naples, 1900. (All clickable links are underlined)</p>
+            </div>
+
+            <!-- Archival Gallery Grid with Real Historical Photos -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Archive Card 1 -->
+                <div class="bg-parchment border border-sepia-600/30 rounded-lg p-4 shadow-md space-y-3">
+                    <div class="h-48 bg-sepia-900/10 rounded overflow-hidden flex items-center justify-center relative border border-sepia-600/20">
+                        <img src="https://tile.loc.gov/storage-services/service/pnp/cph/3b30000/3b34000/3b34000/3b34008r.jpg#h=323&w=640" alt="Neapolitan Emigrants Embarking" class="w-full h-full object-cover sepia-[0.3] hover:sepia-0 transition-all duration-300">
+                    </div>
+                    <h3 class="font-cinzel font-bold text-sepia-900 text-base">The Transatlantic Migration Docks</h3>
+                    <p class="font-playfair text-xs sm:text-sm text-sepia-800 leading-relaxed">
+                        Photograph (1909) showing Italian refugees embarking on steamships, carrying Neapolitan culinary traditions to North and South America.
+                        <a href="https://www.loc.gov/classroom-materials/immigration/italian/the-great-arrival/" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">(<span style="text-decoration: underline;">loc.com</span>)</a>
+                    </p>
+                </div>
+
+                <!-- Archive Card 2 -->
+                <div class="bg-parchment border border-sepia-600/30 rounded-lg p-4 shadow-md space-y-3">
+                    <div class="h-48 bg-sepia-900/10 rounded overflow-hidden flex items-center justify-center relative border border-sepia-600/20">
+                        <img src="https://culinarybackstreets.s3.us-east-2.amazonaws.com/culinarybackstreets/uploads/cb_naples_building_blocks_aizacanne_cg_final.jpg" alt="Gragnano Pasta Drying" class="w-full h-full object-cover sepia-[0.3] hover:sepia-0 transition-all duration-300" onerror="this.src='https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80'">
+                    </div>
+                    <h3 class="font-cinzel font-bold text-sepia-900 text-base">Industrial Pasta Drying</h3>
+                    <p class="font-playfair text-xs sm:text-sm text-sepia-800 leading-relaxed">
+                        Long strands of durum wheat pasta draped over wooden racks in Gragnano, utilizing mountain breezes and humid sea air to cure before export and distribution.
+                        <a href="https://www.bbc.com/travel/article/20190728-italys-city-that-revolutionised-pasta" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">(<span style="text-decoration: underline;">bbc.com</span>)</a>
+                    </p>
+                </div>
+
+                <!-- Archive Card 3 -->
+                <div class="bg-parchment border border-sepia-600/30 rounded-lg p-4 shadow-md space-y-3">
+                    <div class="h-48 bg-sepia-900/10 rounded overflow-hidden flex items-center justify-center relative border border-sepia-600/20">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Naples_%E2%80%93_Street_vendors_at_Santa_Lucia_%28c.1900%29%2C_by_Fratelli_Alinari.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20260214103328" alt="Neapolitan Street Vendor" class="w-full h-full object-cover sepia-[0.3] hover:sepia-0 transition-all duration-300" onerror="this.src='https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80'">
+                    </div>
+                    <h3 class="font-cinzel font-bold text-sepia-900 text-base">Street Vendors</h3>
+                    <p class="font-playfair text-xs sm:text-sm text-sepia-800 leading-relaxed">
+                        Street vendors serving food in Saint Lucia, 1900, feeding the laboring classes who lacked domestic kitchens.
+                        <a href="https://commons.wikimedia.org/wiki/File:Naples_%E2%80%93_Street_vendors_at_Santa_Lucia_(c.1900),_by_Fratelli_Alinari.jpg" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">(<span style="text-decoration: underline;">wikimedia.org</span>)</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Detailed Bibliographic Research Notes -->
+            <div class="bg-parchment antique-border rounded-lg p-6 sm:p-8 shadow-md space-y-6">
+                <h3 class="font-cinzel text-xl font-bold text-sepia-900 border-b border-sepia-600/30 pb-2">Academic & Historical References</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm font-playfair text-sepia-800">
+                    <div class="space-y-2">
+                        <p class="font-bold font-cinzel text-sepia-900">Primary Texts & Cookbooks</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><a href="https://babel.hathitrust.org/cgi/pt?id=oxu1.601929411&seq=7" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">Recipes of Italian Cookery</a></li>
+                            <li><a href="https://escholarship.org/uc/item/4pg5g23n" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">The Gut of Naples</a></li>
+                            <li><a href="https://shop.katieparla.com/products/my-napoli-recipes-and-memories-from-my-familys-kitchen?variant=44867509453000" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">My Napoli</a></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="font-bold font-cinzel text-sepia-900">References</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><a href="https://www.sciencedirect.com/science/article/pii/S0014498305000276" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">siencedirect.com</a></li>
+                            <li><a href="https://orderisda.org/culture/literature/16-million-immigrants-left-italy-and-redefined-cuisine-across-the-globe/" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">orderisda.org</a></li>
+                            <li><a href="https://phys.org/news/2024-07-volcanoes-wine-eruptions-historical-moselle.html#google_vignette" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">phys.org</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-sepia-900 text-parchment-dark py-8 px-4 border-t-2 border-gold text-center text-xs font-cinzel space-y-2 mt-auto">
+        <p> Time Traveler's Table Project • Created by Katelyn Lamp</p>
+    </footer>
+
+    <!-- ITEM DETAIL MODAL -->
+    <div id="item-modal" class="fixed inset-0 bg-sepia-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-parchment antique-border rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl modal-enter">
+            
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-sepia-800 hover:text-terracotta text-xl font-bold w-8 h-8 rounded-full bg-parchment-dark flex items-center justify-center transition">
+                &times;
+            </button>
+
+            <!-- Modal Header -->
+            <div class="border-b border-sepia-600/30 pb-4 mb-4">
+                <div class="flex items-center justify-between gap-2">
+                    <span id="modal-category" class="text-xs font-cinzel font-bold text-terracotta uppercase">Category</span>
+                    <span id="modal-price" class="font-mono text-lg font-bold text-sepia-900 bg-parchment-dark px-3 py-0.5 rounded border border-sepia-600/30">00c</span>
+                </div>
+                <h3 id="modal-title" class="text-2xl sm:text-3xl font-cinzel font-bold text-sepia-900 mt-1">Dish Name</h3>
+                <p id="modal-sub" class="text-sm font-playfair italic text-sepia-800">Italian Subtitle / Traditional Name</p>
+            </div>
+
+            <!-- Modal Body Content -->
+            <div class="space-y-4 font-playfair text-sm sm:text-base text-sepia-900">
+                <div>
+                    <h4 class="font-cinzel text-xs font-bold text-sepia-800 uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-align-left text-terracotta mr-1"></i> Description
+                    </h4>
+                    <p id="modal-desc" class="leading-relaxed bg-parchment-dark/40 p-3 rounded border border-sepia-600/20">Description goes here...</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-parchment-dark/50 p-3 rounded border border-sepia-600/20">
+                        <h4 class="font-cinzel text-xs font-bold text-sepia-800 uppercase tracking-wider mb-1">
+                            <i class="fa-solid fa-basket-shopping text-terracotta mr-1"></i> Key Ingredients
+                        </h4>
+                        <p id="modal-ingredients" class="text-xs sm:text-sm">Ingredients list...</p>
+                    </div>
+                    <div class="bg-parchment-dark/50 p-3 rounded border border-sepia-600/20">
+                        <h4 class="font-cinzel text-xs font-bold text-sepia-800 uppercase tracking-wider mb-1">
+                            <i class="fa-solid fa-landmark text-terracotta mr-1"></i> Primary Historical Force
+                        </h4>
+                        <div id="modal-force" class="text-xs font-sans font-semibold text-terracotta mt-1">Tag</div>
+                    </div>
+                </div>
+
+                <div class="bg-sepia-100 p-4 rounded border-l-4 border-terracotta">
+                    <h4 class="font-cinzel text-xs font-bold text-sepia-900 uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-plane-departure text-terracotta mr-1"></i> Transatlantic Evolution ("Then vs. Now")
+                    </h4>
+                    <p id="modal-transatlantic" class="text-xs sm:text-sm italic leading-relaxed text-sepia-900">
+                        How this dish transformed when Neapolitan immigrants arrived in North/South America...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="mt-6 pt-4 border-t border-sepia-600/30 text-right">
+                <button onclick="closeModal()" class="bg-sepia-800 text-parchment hover:bg-terracotta px-5 py-2 rounded font-cinzel text-xs font-bold transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT DATA & LOGIC -->
+    <script>
+        // MENU DATA STORAGE (16 Authentic Dishes with Detailed Historical Attributes)
+        const menuItems = [
+            // --- ANTIPASTI E FRITTI ---
+            {
+                id: 'panzerotti',
+                section: 'Antipasti e Fritti (Appetizers & Fried Food)',
+                name: 'Panzerotti e Arancini',
+                price: '10c',
+                priceNum: 10,
+                force: 'poverty',
+                forceLabel: 'Poverty',
+                badgeBg: 'bg-red-700',
+                shortDesc: 'Golden crisp potato croquettes & rice balls fried in rendered pork lard by street vendors.',
+                desc: 'In 1900 Naples, street vendors called "o\' frittaiolo" set up giant cauldrons of boiling lard in alleyways. Panzerotti and Arancini provided high-calorie sustenance for poor laborers who lacked kitchen stoves in their tenement rooms.',
+                ingredients: 'Mashed potatoes, rice scraps, lard, pecorino cheese rinds, parsley.',
+                transatlantic: 'In North America, lard was replaced by vegetable oil, and melted mozzarella was added as dairy prices dropped for prosperous Italian-American immigrants.'
+            },
+            {
+                id: 'alici-fritte',
+                section: 'Antipasti e Fritti (Appetizers & Fried Food)',
+                name: 'Alici Fritte',
+                price: '15c',
+                priceNum: 15,
+                force: 'geography',
+                forceLabel: 'Volcanic Soil & Coastal Sea',
+                badgeBg: 'bg-amber-700',
+                shortDesc: 'Freshly caught small Bay anchovies dusted in flour and fried.',
+                desc: 'The coastal geography of the Tyrrhenian Sea provided Naples with abundant schooling small fish like anchovies. Too small and perishable for long export, they were sold cheaply straight off wooden fishing boats at the docks.',
+                ingredients: 'Bay anchovies, coarse sea salt, semolina flour, lard for frying.',
+                transatlantic: 'In the US, fresh anchovies were hard to source, leading immigrants to rely heavily on oil-packed canned anchovies as a salt seasoning agent rather than a main fried fish dish.'
+            },
+            {
+                id: 'fegato-maiale',
+                section: 'Antipasti e Fritti (Appetizers & Fried Food)',
+                name: 'Fegato di Maiale alla Griglia',
+                price: '25c',
+                priceNum: 25,
+                force: 'poverty',
+                forceLabel: 'Poverty',
+                badgeBg: 'bg-red-700',
+                shortDesc: 'Grilled pork liver wrapped in caul fat with bay leaf.',
+                desc: 'Prime muscle cuts of meat were reserved for the wealthy aristocracy. Working-class Neapolitans consumed offal and organ meats. Pork liver wrapped in caul fat provided vital iron and protein at a fraction of the cost of beef.',
+                ingredients: 'Pork liver, pork caul fat, wild bay leaf, coarse salt.',
+                transatlantic: 'As immigrant wages rose in America, offal rapidly fell out of favor, replaced by muscle meats like pork chops and veal cutlets.'
+            },
+
+            // --- LE PIZZE DAL FORNO A LEGNA ---
+            {
+                id: 'pizza-mastunicola',
+                section: 'Le Pizze dal Forno a Legna (Wood-Fired Pizzas)',
+                name: 'Pizza alla Mastunicola',
+                price: '12c',
+                priceNum: 12,
+                force: 'poverty',
+                forceLabel: 'Poverty',
+                badgeBg: 'bg-red-700',
+                shortDesc: 'The ancient Neapolitan flatbread topped with rendered lard, sheep cheese, and fresh basil.',
+                desc: 'Predating the widespread arrival of tomatoes, Mastunicola was the classic working-man\'s pizza. Baked in wood-fired ovens, it relied on rendered lard for fat and flavor, garnished with sheep\'s milk cheese and wild basil.',
+                ingredients: 'Wheat flour dough, rendered lard, aged Pecorino, fresh basil, black pepper.',
+                transatlantic: 'Nearly vanished in America, where tomato-sauced pizza became the standard.'
+            },
+            {
+                id: 'pizza-marinara',
+                section: 'Le Pizze dal Forno a Legna (Wood-Fired Pizzas)',
+                name: 'Pizza Marinara',
+                price: '15c',
+                priceNum: 15,
+                force: 'geography',
+                forceLabel: 'Volcanic Soil & Coastal Sea',
+                badgeBg: 'bg-amber-700',
+                shortDesc: 'Flavored with Vesuvian crushed tomatoes, garlic, oregano, and olive oil.',
+                desc: 'The staple food of returning Neapolitan fishermen ("marinari"). The intense sweetness of tomatoes grown in volcanic Vesuvian soil combined with garlic and oregano created a flavorful, cheap pie without expensive cheese.',
+                ingredients: 'Volcanic plum tomatoes, fresh garlic, wild oregano, olive oil, sea salt.',
+                transatlantic: 'Became the foundation for modern Italian-American pizza sauce, though American versions added heavy oregano and sugar.'
+            },
+            {
+                id: 'pizza-margherita',
+                section: 'Le Pizze dal Forno a Legna (Wood-Fired Pizzas)',
+                name: 'Pizza Margherita',
+                price: '30c',
+                priceNum: 30,
+                force: 'tech',
+                forceLabel: 'Tech & Industrialization',
+                badgeBg: 'bg-blue-700',
+                shortDesc: 'Created to honor Queen Margherita of Savoy in 1889. Topped with tomato, fresh mozzarella, and basil.',
+                desc: 'Symbolizing the Italian flag (red tomato, white mozzarella, green basil), this pizza was popularized after Queen Margherita visited Naples. High oven temperatures baked the wet mozzarella dough in under 90 seconds.',
+                ingredients: 'High-gluten wheat flour, crushed San Marzano tomatoes, fresh cow milk mozzarella, basil leaves.',
+                transatlantic: 'Evolved into New York-style pizza: baked longer at lower temperatures in gas deck ovens with low-moisture mozzarella.'
+            },
+
+            // --- I PRIMI PIATTI DI MACCHERONI ---
+            {
+                id: 'maccheroni-pomodoro',
+                section: 'I Primi Piatti di Maccheroni (Pasta Entrees)',
+                name: 'Maccheroni al Pomodoro',
+                price: '20c',
+                priceNum: 20,
+                force: 'tech',
+                forceLabel: 'Tech & Industrialization',
+                badgeBg: 'bg-blue-700',
+                shortDesc: 'Dry macaroni from Gragnano tossed in canned San Marzano tomato sauce.',
+                desc: 'By 1900, industrial hydraulic presses in Gragnano transformed Neapolitans into "macaroni eaters" (mangiamaccheroni). Industrial steam-canning permitted factory-canned San Marzano tomatoes to be eaten year-round at low cost.',
+                ingredients: 'Dry durum wheat pasta, canned San Marzano tomatoes, garlic, lard or olive oil.',
+                transatlantic: 'Formed the iconic basis of American canned and boxed pasta products like Franco-American and Chef Boyardee.'
+            },
+            {
+                id: 'vermicelli-puttanesca',
+                section: 'I Primi Piatti di Maccheroni (Pasta Entrees)',
+                name: 'Vermicelli alla Puttanesca',
+                price: '25c',
+                priceNum: 25,
+                force: 'geography',
+                forceLabel: 'Volcanic Soil & Coastal Sea',
+                badgeBg: 'bg-amber-700',
+                shortDesc: 'Long pasta with capers, cured black olives, salted anchovies, and chili.',
+                desc: 'A classic pantry dish utilizing non-perishable preserved Mediterranean pantry items: salt-cured anchovies from the sea, pickled capers, black olives, and dried chili pepper.',
+                ingredients: 'Dry vermicelli, salted anchovies, black Gaeta olives, capers, garlic, dried chili.',
+                transatlantic: 'Remained popular among immigrants due to the long shelf-life of imported barrel olives and canned anchovies.'
+            },
+            {
+                id: 'ziti-domenica',
+                section: 'I Primi Piatti di Maccheroni (Pasta Entrees)',
+                name: 'Ziti della Domenica con Ragù',
+                price: '45c',
+                priceNum: 45,
+                force: 'migration',
+                forceLabel: 'Transatlantic Migration',
+                badgeBg: 'bg-emerald-700',
+                shortDesc: 'Hand-broken ziti pasta smothered in a rich 6-hour slow-cooked onion and beef-pork ragù.',
+                desc: 'In 1900 Naples, Neapolitan Ragù was a luxurious Sunday feast dish. The meat was cooked so slowly in onions and lard that it fused into the sauce; the small portion of meat was served separately as a second course while the rich sauce coated the ziti.',
+                ingredients: 'Hand-broken long ziti, lard, yellow onions, beef muscle, pork ribs, tomato paste.',
+                transatlantic: 'In America, cheap beef turned this sauce into "Sunday Gravy".'
+            },
+
+            // --- I SECONDI DI CARNE E PESCE ---
+            {
+                id: 'zuppa-pesce',
+                section: 'I Secondi di Carne e Pesce (Meat & Seafood)',
+                name: 'Zuppa di Pesce dei Pescatori',
+                price: '50c',
+                priceNum: 50,
+                force: 'geography',
+                forceLabel: 'Volcanic Soil & Coastal Sea',
+                badgeBg: 'bg-amber-700',
+                shortDesc: 'Humble fisherman\'s stew of bony rockfish, squid scraps, garlic, and stale bread.',
+                desc: 'Fishermen sold prime sea bass and dentice to high-end hotel restaurants, keeping unmarketable, bony scrap fish for themselves. Stewed with garlic, tomato water, and dried sea water, it was poured over stale bread to absorb every drop.',
+                ingredients: 'Scorpionfish, small squid, rock crabs, garlic, tomato passata, stale sourdough bread.',
+                transatlantic: 'Evolved in San Francisco into "Cioppino", created by Italian-American fishermen who added rich Dungeness crab and wine.'
+            },
+            {
+                id: 'trippa-napoletana',
+                section: 'I Secondi di Carne e Pesce (Meat & Seafood)',
+                name: 'Trippa alla Napoletana',
+                price: '35c',
+                priceNum: 35,
+                force: 'poverty',
+                forceLabel: 'Poverty',
+                badgeBg: 'bg-red-700',
+                shortDesc: 'Tender beef tripe braised with tomatoes, pecorino cheese, and wild mint.',
+                desc: 'The symbol of Neapolitan poverty. Tripe cleaners boiled cattle stomachs sold cheaply by royal slaughterhouses. Slow-simmered with tomatoes and mint, it provided rich protein for the urban working class.',
+                ingredients: 'Beef honeycomb tripe, tomatoes, pecorino cheese, wild mint, lard, garlic.',
+                transatlantic: 'Largely rejected by second-generation Italian-Americans who associated organ meats with poverty and shame.'
+            },
+
+            // --- DOLCI DELLA NONNA ---
+            {
+                id: 'pastiera',
+                section: 'Dolci della Nonna (Desserts)',
+                name: 'Pastiera Napoletana',
+                price: '20c',
+                priceNum: 20,
+                force: 'migration',
+                forceLabel: 'Transatlantic Migration',
+                badgeBg: 'bg-emerald-700',
+                shortDesc: 'Ricotta tart filled with cooked wheat berries, candied orange peel, and orange blossom water.',
+                desc: 'Originally an Easter pastry, Pastiera represents Neapolitan agricultural symbolism: wheat cooked in milk, sweet ricotta, and citrus blossoms. It was a nostalgic culinary anchor for emigrants leaving Naples.',
+                ingredients: 'Cooked durum wheat berries, sheep ricotta, candied citrus peel, orange blossom water, lard crust.',
+                transatlantic: 'Emigrants painstakingly preserved the recipe in Brooklyn and Buenos Aires, substituting canned grain for raw wheat.'
+            },
+            {
+                id: 'taralli-dolci',
+                section: 'Dolci della Nonna (Desserts)',
+                name: 'Taralli Dolci',
+                price: '10c',
+                priceNum: 10,
+                force: 'poverty',
+                forceLabel: 'Poverty',
+                badgeBg: 'bg-red-700',
+                shortDesc: 'Sweet glazed dough rings flavored with white wine and aniseed.',
+                desc: 'Bakers made taralli from leftover bread dough scraps mixed with lard, sugar, and anise seeds. Extremely dry and long-lasting, they were ideal budget snacks for dockworkers to dip into cheap red wine.',
+                ingredients: 'Dough scraps, lard, white wine, anise seeds, coarse sugar glaze.',
+                transatlantic: 'Remained a staple bakery cookie in Little Italy shops across North America.'
+            },
+
+            // --- BEVANDE ---
+            {
+                id: 'vino-gragnano',
+                section: 'Bevande (Beverages)',
+                name: 'Vino Rosso di Gragnano',
+                price: '10c',
+                priceNum: 10,
+                force: 'geography',
+                forceLabel: 'Volcanic Soil & Coastal Sea',
+                badgeBg: 'bg-amber-700',
+                shortDesc: 'Slightly sparkling, chilled dark red wine grown on Vesuvian slopes.',
+                desc: 'Grown in the rich volcanic ash of Mount Vesuvius, Gragnano red wine is naturally fizzy, light, and acidic.',
+                ingredients: 'Aglianico, Piedirosso, and Sciascinoso volcanic grapes.',
+                transatlantic: 'Replaced in America by Californian Chianti jugs and domestic red wines.'
+            },
+            {
+                id: 'acqua-madonna',
+                section: 'Bevande (Beverages)',
+                name: 'Acqua della Madonna',
+                price: '2c',
+                priceNum: 2,
+                force: 'geography',
+                forceLabel: 'Volcanic Soil & Coastal Sea',
+                badgeBg: 'bg-amber-700',
+                shortDesc: 'Natural mineral water from Castellammare springs.',
+                desc: 'Sold by street water-vendors (o\' acquaiuolo), this mineral spring water was naturally carbonated and sulfurous, believed to aid digestion of heavy fried foods.',
+                ingredients: 'Natural volcanic mineral spring water.',
+                transatlantic: 'Evolved into commercial bottled sparkling waters like San Pellegrino.'
+            },
+            {
+                id: 'caffe-napoletano',
+                section: 'Bevande (Beverages)',
+                name: 'Caffè Napoletano',
+                price: '5c',
+                priceNum: 5,
+                force: 'tech',
+                forceLabel: 'Tech & Industrialization',
+                badgeBg: 'bg-blue-700',
+                shortDesc: 'Dark roast coffee brewed in the flip-over Cuccumella drip pot.',
+                desc: 'Around 1900, the Neapolitan flip pot (Cuccumella) revolutionized coffee brewing at home, while early steam-pressured espresso machines began appearing in grand Neapolitan cafés.',
+                ingredients: 'Dark roasted Robusta-Arabica coffee beans, spring water.',
+                transatlantic: 'Laid the ground work for Italian espresso culture worldwide.'
+            }
+        ];
+
+        // RENDER MENU ITEMS GROUPED BY CATEGORY
+        function renderMenu(itemsToRender) {
+            const container = document.getElementById('menu-sections-container');
+            container.innerHTML = '';
+
+            // Group by section
+            const sections = {};
+            itemsToRender.forEach(item => {
+                if (!sections[item.section]) sections[item.section] = [];
+                sections[item.section].push(item);
+            });
+
+            if (Object.keys(sections).length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-sepia-800 font-playfair italic">
+                        No menu items found for this historical filter.
+                    </div>`;
+                return;
+            }
+
+            for (const [sectionTitle, items] of Object.entries(sections)) {
+                const sectionEl = document.createElement('div');
+                sectionEl.className = 'space-y-4';
+
+                let html = `
+                    <div class="border-b-2 border-sepia-600/40 pb-2">
+                        <h3 class="text-xl sm:text-2xl font-cinzel font-bold text-sepia-900 tracking-wide">${sectionTitle}</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                `;
+
+                items.forEach(item => {
+                    html += `
+                        <div onclick="openModal('${item.id}')" class="group bg-parchment-dark/40 hover:bg-sepia-100 border border-sepia-600/30 hover:border-terracotta rounded-lg p-4 cursor-pointer transition shadow-sm hover:shadow flex flex-col justify-between space-y-3">
+                            <div>
+                                <div class="flex justify-between items-start gap-2 mb-1">
+                                    <h4 class="font-cinzel font-bold text-lg text-sepia-900 group-hover:text-terracotta transition-colors">${item.name}</h4>
+                                    <span class="font-mono font-bold text-terracotta text-base bg-parchment px-2 py-0.5 rounded border border-sepia-600/20 shrink-0">${item.price}</span>
+                                </div>
+                                <p class="font-playfair text-xs sm:text-sm text-sepia-800 leading-relaxed">${item.shortDesc}</p>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-sepia-600/10 text-xs">
+                                <span class="text-[11px] font-sans font-semibold text-white ${item.badgeBg} px-2 py-0.5 rounded">
+                                    ${item.forceLabel}
+                                </span>
+                                <span class="font-cinzel font-bold text-sepia-800 group-hover:text-terracotta flex items-center gap-1">
+                                    Analyze <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                sectionEl.innerHTML = html;
+                container.appendChild(sectionEl);
+            }
+        }
+
+        // TAB SWITCHING LOGIC
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-terracotta', 'text-terracotta');
+                btn.classList.add('border-transparent', 'text-sepia-800');
+            });
+            
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.remove('border-transparent', 'text-sepia-800');
+            activeBtn.classList.add('border-terracotta', 'text-terracotta');
+
+            document.getElementById('content-menu').classList.add('hidden');
+            document.getElementById('content-history').classList.add('hidden');
+            document.getElementById('content-research').classList.add('hidden');
+
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+        }
+
+        // FILTER LOGIC
+        function filterMenu(filterKey) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-sepia-800', 'text-parchment');
+                btn.classList.add('bg-parchment-dark', 'text-sepia-900');
+            });
+
+            const activeBtn = document.getElementById(`filter-${filterKey}`);
+            activeBtn.classList.remove('bg-parchment-dark', 'text-sepia-900');
+            activeBtn.classList.add('bg-sepia-800', 'text-parchment');
+
+            if (filterKey === 'all') {
+                renderMenu(menuItems);
+            } else {
+                const filtered = menuItems.filter(item => item.force === filterKey);
+                renderMenu(filtered);
+            }
+        }
+
+        // MODAL LOGIC
+        function openModal(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            document.getElementById('modal-category').innerText = item.section;
+            document.getElementById('modal-price').innerText = item.price;
+            document.getElementById('modal-title').innerText = item.name;
+            document.getElementById('modal-sub').innerText = `Historical Menu Item (c. 1900 Naples)`;
+            document.getElementById('modal-desc').innerText = item.desc;
+            document.getElementById('modal-ingredients').innerText = item.ingredients;
+            document.getElementById('modal-force').innerText = item.forceLabel;
+            document.getElementById('modal-transatlantic').innerText = item.transatlantic;
+
+            document.getElementById('item-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('item-modal').classList.add('hidden');
+        }
+
+        // INITIALIZE ON LOAD
+        window.onload = function() {
+            renderMenu(menuItems);
+        }
+    </script>
+</body>
+</html>
